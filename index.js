@@ -6,8 +6,6 @@ const axios = require('axios');
 const prompt = require('prompt-sync');
 
 
-
-
 const tokenUrl = 'http://20.244.56.144/test/auth';
 const authData = {
   companyName: 'doMart',
@@ -49,7 +47,8 @@ async function fetchDataWithToken(company,n,product) {
     
     try {
       const response = await axios.get(apiUrl, { headers });
-      console.log(`Top ${n} products of category - ${product}:`, response.data);
+      console.log(`Comapny - ${company} - Top ${n} products of category - ${product}:`, response.data);
+    return response.data;
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -58,18 +57,26 @@ async function fetchDataWithToken(company,n,product) {
 const companies = ['AMZ','FLP','SNP','MYN','AZO'];
 const n = 5
 const product = "Laptop";
+let finalData = {};
 
 
-async function compareProduct() {
+async function compareProduct(n,product) {
     for(var i=0;i<5;i++)
     {
-        await fetchDataWithToken(companies[i],n,product);
+        const data = await fetchDataWithToken(companies[i],n,product);
         console.log("---------");
     }
 }
 
-compareProduct();
+compareProduct(n,product);
 
+// app.get("/categories/:categoryname/products/:n",function(req,res){
+//     const categoryname = req.params.categoryname;
+//     const n = req.params.n;
+//     const result = compareProduct(n,categoryname);
+//     console.log(result);
+//     res.send(result);
+// })
 
 const port = 3500;
 app.listen(port,function(){
